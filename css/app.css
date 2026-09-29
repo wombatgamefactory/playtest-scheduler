@@ -1,0 +1,285 @@
+:root {
+  --bg: #ffffff;
+  --fg: #14181f;
+  --muted: #62707f;
+  --card: #f3f5f7;
+  --border: #d8dee4;
+  --accent: #2b6cb0;
+  --btn-fg: #ffffff;
+  --warn-bg: #fff3cd;
+  --warn-fg: #7a5b00;
+  --error-bg: #fde2e2;
+  --error-fg: #8a1f1f;
+  --info-bg: #eaf1fb;
+  --info-fg: #2f4d6e;
+  /* Tab bar box height (52px buttons + 1px top border), used to size the
+     scroll area's bottom padding so the fixed bar never covers content. */
+  --tabbar-height: 53px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12151a;
+    --fg: #eef1f5;
+    --muted: #9aa7b5;
+    --card: #1c2129;
+    --border: #2c333d;
+    --accent: #6fa8dc;
+    --btn-fg: #0a0d11;
+    --warn-bg: #3a3220;
+    --warn-fg: #f0d27a;
+    --error-bg: #3a1f1f;
+    --error-fg: #f2a0a0;
+    --info-bg: #1c2a3a;
+    --info-fg: #a9c4e2;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: var(--bg);
+}
+
+body {
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  /* At least the tab bar's own height plus the safe-area inset it also pads
+     itself with, plus a 16px breathing-room buffer, so the last control on
+     any scrollable view is never hidden behind the fixed bar. */
+  padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px) + 16px);
+}
+
+h1, h2, h3 { line-height: 1.2; }
+h2 { font-size: 1.15rem; margin: 4px 0 12px; }
+h3 { font-size: 1rem; margin: 18px 0 6px; }
+
+a { color: var(--accent); }
+
+.app-header {
+  padding: 12px 16px 4px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.app-header h1 { font-size: 1.25rem; margin: 0; }
+
+main {
+  padding: 8px 16px 24px;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.muted { color: var(--muted); }
+.hidden { display: none !important; }
+
+/* --- tab bar ------------------------------------------------------- */
+
+nav.tabbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 20;
+}
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--muted);
+  padding: 10px 4px;
+  font-size: 0.85rem;
+  min-height: calc(var(--tabbar-height) - 1px); /* -1px: nav's own top border */
+}
+.tab-btn.active { color: var(--accent); font-weight: 700; }
+
+/* --- buttons and fields --------------------------------------------- */
+
+.btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--fg);
+  font-size: 1rem;
+}
+.btn-primary { background: var(--accent); color: var(--btn-fg); border-color: var(--accent); }
+.btn-large { width: 100%; font-size: 1.1rem; font-weight: 700; }
+.btn-mini { min-height: 36px; padding: 4px 10px; font-size: 0.9rem; }
+.btn-danger { border-color: #c0392b; color: #c0392b; background: var(--card); }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+
+.field { margin: 8px 0; }
+.field label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.field input, .field select, textarea, select {
+  font-size: 1rem;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+  width: 100%;
+  min-height: 40px;
+}
+textarea { min-height: 90px; font-family: inherit; }
+
+.row2 { display: flex; gap: 10px; }
+.row2 > .field { flex: 1; min-width: 0; }
+
+/* --- People ----------------------------------------------------------- */
+
+.counts { color: var(--muted); margin: 6px 0 14px; }
+
+.person-row { border-bottom: 1px solid var(--border); padding: 6px 0; }
+.person-main { display: flex; align-items: center; gap: 10px; }
+.here-toggle {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--accent);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.person-row.present .here-toggle {
+  background: var(--accent); color: var(--btn-fg); border-color: var(--accent);
+}
+.person-name {
+  flex: 1;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--fg);
+  font-size: 1.05rem;
+  padding: 10px 0;
+}
+.tag {
+  font-size: 0.7rem;
+  background: var(--info-bg);
+  color: var(--info-fg);
+  border-radius: 6px;
+  padding: 1px 6px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+.tag-warn { background: var(--warn-bg); color: var(--warn-fg); }
+
+.person-detail { padding: 8px 4px 14px 48px; }
+.switch-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-size: 0.95rem; }
+.switch-row input { width: auto; min-height: auto; }
+
+.stepper-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+.stepper-row span:first-child { width: 90px; }
+.stepper-value { min-width: 24px; text-align: center; font-weight: 700; }
+
+.suggested {
+  font-size: 0.85rem; color: var(--info-fg); background: var(--info-bg);
+  padding: 6px 8px; border-radius: 8px; margin-top: 8px;
+}
+.cancelled-note {
+  font-size: 0.85rem; color: var(--error-fg); background: var(--error-bg);
+  padding: 6px 8px; border-radius: 8px; margin-top: 8px;
+}
+
+.walkin-row { display: flex; gap: 8px; margin-top: 14px; }
+.walkin-row input { flex: 1; }
+
+/* --- Schedule ----------------------------------------------------------- */
+
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.chip {
+  border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px;
+  background: var(--card); color: var(--fg); font-size: 0.9rem;
+}
+.chip.selected { background: var(--accent); color: var(--btn-fg); border-color: var(--accent); }
+
+.session-card {
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+  margin: 10px 0; background: var(--card);
+}
+.session-card.locked { opacity: 0.75; }
+.session-header { font-weight: 700; margin-bottom: 6px; }
+.table-row {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 8px; padding: 4px 0; flex-wrap: wrap;
+}
+.table-row select { width: auto; min-height: 32px; padding: 2px 4px; font-size: 0.85rem; }
+.watchers { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+.warn-panel, .info-panel, .error-panel {
+  border-radius: 8px; padding: 8px 10px; margin: 8px 0; font-size: 0.9rem;
+}
+.warn-panel { background: var(--warn-bg); color: var(--warn-fg); }
+.warn-panel.muted-panel { background: var(--info-bg); color: var(--info-fg); }
+.info-panel { background: var(--info-bg); color: var(--info-fg); }
+.error-panel { background: var(--error-bg); color: var(--error-fg); }
+.error-panel ul { margin: 6px 0 0; padding-left: 18px; }
+.warn-panel p, .info-panel p, .error-panel p { margin: 4px 0; }
+
+/* --- Post-it overlay ----------------------------------------------------- */
+
+.overlay {
+  position: fixed; inset: 0; background: var(--bg); z-index: 50;
+  overflow-y: auto;
+  /* max(): at least 16px all round, more under a phone notch/home-indicator
+     so the close button and last card are never tucked under either. */
+  padding: max(16px, env(safe-area-inset-top, 0px)) 16px
+           max(16px, env(safe-area-inset-bottom, 0px));
+}
+.overlay.hidden { display: none; }
+.overlay-close {
+  position: sticky; top: 0; margin-bottom: 12px;
+  display: block; width: 100%;
+  font-size: 1.05rem; font-weight: 700;
+  background: var(--accent); color: var(--btn-fg); border-color: var(--accent);
+}
+.postit-card {
+  border: 2px solid var(--border); border-radius: 12px; padding: 20px;
+  margin-bottom: 16px; text-align: center;
+}
+.postit-end { font-size: 2.6rem; font-weight: 800; }
+.postit-session { color: var(--muted); margin-bottom: 8px; }
+.postit-card ul { list-style: none; padding: 0; margin: 0; font-size: 1.2rem; }
+.postit-card li { margin: 4px 0; }
+
+/* --- Log ------------------------------------------------------------- */
+
+.log-entry { margin: 10px 0; }
+.log-summary {
+  width: 100%; text-align: left; background: var(--card);
+  border: 1px solid var(--border); border-radius: 8px; padding: 10px;
+  color: var(--fg); font-size: 0.95rem;
+}
+.log-detail { padding: 8px 4px; }
+.log-detail ul { margin: 4px 0 10px; padding-left: 18px; }
+.data-area { margin-top: 24px; }
+.data-area summary { cursor: pointer; color: var(--muted); }
+
+/* --- toast ------------------------------------------------------------- */
+
+#toast {
+  position: fixed; left: 50%; bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 10px);
+  background: #222; color: #fff; padding: 8px 16px; border-radius: 20px;
+  font-size: 0.9rem; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s; z-index: 100;
+  max-width: 90vw; text-align: center;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }

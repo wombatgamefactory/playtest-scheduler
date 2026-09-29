@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Playtest Scheduler</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="app-header">
+  <h1>Playtest Scheduler</h1>
+</header>
+
+<main>
+  <section id="tab-evening" class="panel"></section>
+  <section id="tab-people" class="panel"></section>
+  <section id="tab-schedule" class="panel"></section>
+  <section id="tab-log" class="panel"></section>
+</main>
+
+<nav class="tabbar">
+  <button class="tab-btn" data-action="set-tab" data-tab="evening">Evening</button>
+  <button class="tab-btn" data-action="set-tab" data-tab="people">People</button>
+  <button class="tab-btn" data-action="set-tab" data-tab="schedule">Schedule</button>
+  <button class="tab-btn" data-action="set-tab" data-tab="log">Log</button>
+</nav>
+
+<div id="postit-overlay" class="overlay hidden">
+  <button class="btn overlay-close" data-action="postit-close">Close</button>
+  <div id="postit-content"></div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+node_modules/
+*.mhtml
+tests/fixtures/
+test-results/
+playwright-report/
