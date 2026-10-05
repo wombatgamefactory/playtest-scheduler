@@ -181,6 +181,20 @@ textarea { min-height: 90px; font-family: inherit; }
 }
 .tag-warn { background: var(--warn-bg); color: var(--warn-fg); }
 
+.person-name { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.person-sub { font-size: 0.85rem; color: var(--accent); }
+.person-sub.muted { color: var(--muted); }
+.person-chevron {
+  background: none; border: none; color: var(--muted);
+  font-size: 1.2rem; min-width: 44px; min-height: 44px; cursor: pointer;
+}
+.hint { font-size: 0.85rem; margin: 4px 0 8px; }
+.game-tick {
+  display: flex; align-items: center; gap: 6px;
+  min-height: 44px; padding: 0 6px; font-size: 0.9rem; cursor: pointer; white-space: nowrap;
+}
+.game-tick input { width: 22px; height: 22px; min-height: auto; }
+
 .person-detail { padding: 8px 4px 14px 48px; }
 .switch-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-size: 0.95rem; }
 .switch-row input { width: auto; min-height: auto; }

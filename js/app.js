@@ -375,8 +375,7 @@ function toggleGame(id) {
     p.game = null;
   } else {
     const roster = state.roster[p.id];
-    p.game = roster && roster.lastGame ? { ...roster.lastGame } : { testersMin: 2, testersPreferred: 2, testersMax: 3, durationMins: null };
-  }
+    p.game = roster && roster.lastGame ? { ...roster.lastGame } : { testersMin: 2, testersPreferred: 2, testersMax: 3, durationMins: null };  }
   saveEvening();
   render();
 }
@@ -430,8 +429,7 @@ function addWalkin() {
     suggestedFromComment: null,
     cancelledNote: null,
   };
-  state.evening.people.push(person);
-  if (!state.roster[id]) {
+  state.evening.people.push(person);  if (!state.roster[id]) {
     state.roster[id] = { id, meetupName: person.meetupName, displayName, isOrganiser, lastGame: person.game };
   }
   if (input) input.value = '';
@@ -577,6 +575,14 @@ function stepperRow(id, field, label, value) {
   </div>`;
 }
 
+// One-line summary shown under each name, so game details are visible without expanding.
+function gameSummary(g) {
+  if (!g) return 'Tester';
+  const range = g.testersMin === g.testersMax ? `+${g.testersMin}` : `+${g.testersMin}-${g.testersMax}`;
+  const mins = g.durationMins ? ` &middot; ${g.durationMins} min` : '';
+  return `${range} testers${mins}`;
+}
+
 function renderPersonRow(p) {
   const expanded = expandedPeople.has(p.id);
   const g = p.game;
@@ -584,7 +590,12 @@ function renderPersonRow(p) {
   <div class="person-row ${p.present ? 'present' : ''}">
     <div class="person-main">
       <button type="button" class="here-toggle" data-action="toggle-present" data-person="${p.id}" aria-pressed="${p.present}" title="Here">${p.present ? '&#10003;' : ''}</button>
-      <button type="button" class="person-name" data-action="expand" data-person="${p.id}">${escapeHtml(p.displayName)}${p.isOrganiser ? ' <span class="tag">Organiser</span>' : ''}${g ? ' <span class="tag">Game</span>' : ''}${!p.present && p.cancelledNote ? ' <span class="tag tag-warn">Not coming</span>' : ''}</button>
+      <div class="person-name">
+        <span class="person-name-line">${escapeHtml(p.displayName)}${p.isOrganiser ? ' <span class="tag">Organiser</span>' : ''}${!p.present && p.cancelledNote ? ' <span class="tag tag-warn">Not coming</span>' : ''}</span>
+        <span class="person-sub ${g ? '' : 'muted'}">${gameSummary(g)}</span>
+      </div>
+      <label class="game-tick"><input type="checkbox" data-checkbox="game" data-person="${p.id}" ${g ? 'checked' : ''}> Game</label>
+      <button type="button" class="person-chevron" data-action="expand" data-person="${p.id}" aria-expanded="${expanded}" aria-label="${expanded ? 'Close' : 'Edit'} ${escapeHtml(p.displayName)}">${expanded ? '&#9662;' : '&#9656;'}</button>
     </div>
     ${expanded ? `
     <div class="person-detail">
@@ -600,7 +611,6 @@ function renderPersonRow(p) {
         </div>
       </div>
       <label class="switch-row"><input type="checkbox" data-checkbox="organiser" data-person="${p.id}" ${p.isOrganiser ? 'checked' : ''}> Organiser</label>
-      <label class="switch-row"><input type="checkbox" data-checkbox="game" data-person="${p.id}" ${g ? 'checked' : ''}> Brought a game</label>
       ${g ? `
         <div class="game-fields">
           <p class="muted">Testers - not counting you</p>
@@ -625,6 +635,7 @@ function renderPeople() {
   panel.innerHTML = `
     <h2>People</h2>
     <div class="counts">Here ${here} &middot; Designers ${designers} &middot; Testers ${testers}</div>
+    <p class="muted hint">Tap the circle to check someone in. Tick Game if they brought one. Tap the arrow to change testers, length or arrive/leave times.</p>
     <div class="people-list">${rows || '<p class="muted">No one yet. Import from Meetup or add a walk-in.</p>'}</div>
     <div class="walkin-row">
       <input id="walkin-name" type="text" placeholder="Name">
